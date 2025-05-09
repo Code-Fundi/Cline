@@ -1,5 +1,4 @@
 import { ApiConfiguration } from "./api"
-import { AutoApprovalSettings } from "./AutoApprovalSettings"
 import { BrowserSettings } from "./BrowserSettings"
 import { ChatSettings } from "./ChatSettings"
 import { UserInfo } from "./UserInfo"
@@ -19,7 +18,6 @@ export interface WebviewMessage {
 		| "showChatView"
 		| "refreshClineRules"
 		| "openMcpSettings"
-		| "autoApprovalSettings"
 		| "togglePlanActMode"
 		| "openExtensionSettings"
 		| "requestVsCodeLmModels"
@@ -48,7 +46,6 @@ export interface WebviewMessage {
 	images?: string[]
 	bool?: boolean
 	number?: number
-	autoApprovalSettings?: AutoApprovalSettings
 	browserSettings?: BrowserSettings
 	chatSettings?: ChatSettings
 	chatContent?: ChatContent

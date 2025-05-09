@@ -64,6 +64,7 @@ import { toggleFavoriteModel } from "../core/controller/state/toggleFavoriteMode
 import { resetState } from "../core/controller/state/resetState"
 import { togglePlanActMode } from "../core/controller/state/togglePlanActMode"
 import { updateTerminalConnectionTimeout } from "../core/controller/state/updateTerminalConnectionTimeout"
+import { updateAutoApprovalSettings } from "../core/controller/state/updateAutoApprovalSettings"
 
 // Task Service
 import { cancelTask } from "../core/controller/task/cancelTask"
@@ -168,6 +169,7 @@ export function addServices(
 		resetState: wrapper(resetState, controller),
 		togglePlanActMode: wrapper(togglePlanActMode, controller),
 		updateTerminalConnectionTimeout: wrapper(updateTerminalConnectionTimeout, controller),
+		updateAutoApprovalSettings: wrapper(updateAutoApprovalSettings, controller),
 	})
 
 	// Task Service
