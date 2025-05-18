@@ -56,6 +56,7 @@ interface ExtensionStateContextType extends ExtensionState {
 	setLocalCursorRulesToggles: (toggles: Record<string, boolean>) => void
 	setLocalWindsurfRulesToggles: (toggles: Record<string, boolean>) => void
 	setMcpMarketplaceCatalog: (value: McpMarketplaceCatalog) => void
+	setTotalTasksSize: (value: number | null) => void
 
 	// Navigation state setters
 	setShowMcp: (value: boolean) => void
@@ -311,10 +312,6 @@ export const ExtensionStateContextProvider: React.FC<{
 				}
 				break
 			}
-			case "totalTasksSize": {
-				setTotalTasksSize(message.totalTasksSize ?? null)
-				break
-			}
 		}
 	}, [])
 
@@ -541,6 +538,7 @@ export const ExtensionStateContextProvider: React.FC<{
 				localWindsurfRulesToggles: toggles,
 			})),
 		setMcpTab,
+		setTotalTasksSize,
 	}
 
 	return <ExtensionStateContext.Provider value={contextValue}>{children}</ExtensionStateContext.Provider>

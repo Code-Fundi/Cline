@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire"
-import { Empty, EmptyRequest, Int64Request, Metadata, StringArrayRequest, StringRequest } from "./common"
+import { Empty, EmptyRequest, Int64, Int64Request, Metadata, StringArrayRequest, StringRequest } from "./common"
 
 export const protobufPackage = "cline"
 
@@ -1103,6 +1103,15 @@ export const TaskServiceDefinition = {
 			requestType: EmptyRequest,
 			requestStream: false,
 			responseType: Empty,
+			responseStream: false,
+			options: {},
+		},
+		/** Gets the total size of all tasks */
+		getTotalTasksSize: {
+			name: "getTotalTasksSize",
+			requestType: EmptyRequest,
+			requestStream: false,
+			responseType: Int64,
 			responseStream: false,
 			options: {},
 		},

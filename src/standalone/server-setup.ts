@@ -68,6 +68,7 @@ import { updateTerminalConnectionTimeout } from "../core/controller/state/update
 // Task Service
 import { cancelTask } from "../core/controller/task/cancelTask"
 import { clearTask } from "../core/controller/task/clearTask"
+import { getTotalTasksSize } from "../core/controller/task/getTotalTasksSize"
 import { deleteTasksWithIds } from "../core/controller/task/deleteTasksWithIds"
 import { newTask } from "../core/controller/task/newTask"
 import { showTaskWithId } from "../core/controller/task/showTaskWithId"
@@ -174,6 +175,7 @@ export function addServices(
 	server.addService(proto.cline.TaskService.service, {
 		cancelTask: wrapper(cancelTask, controller),
 		clearTask: wrapper(clearTask, controller),
+		getTotalTasksSize: wrapper(getTotalTasksSize, controller),
 		deleteTasksWithIds: wrapper(deleteTasksWithIds, controller),
 		newTask: wrapper(newTask, controller),
 		showTaskWithId: wrapper(showTaskWithId, controller),
