@@ -81,6 +81,14 @@ export interface AskResponseRequest {
 	images: string[]
 }
 
+/** Request for invoke operation */
+export interface InvokeRequest {
+	metadata?: Metadata | undefined
+	action: string
+	text: string
+	images: string[]
+}
+
 function createBaseNewTaskRequest(): NewTaskRequest {
 	return { metadata: undefined, text: "", images: [] }
 }
@@ -1083,11 +1091,129 @@ export const AskResponseRequest: MessageFns<AskResponseRequest> = {
 	},
 }
 
+function createBaseInvokeRequest(): InvokeRequest {
+	return { metadata: undefined, action: "", text: "", images: [] }
+}
+
+export const InvokeRequest: MessageFns<InvokeRequest> = {
+	encode(message: InvokeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+		if (message.metadata !== undefined) {
+			Metadata.encode(message.metadata, writer.uint32(10).fork()).join()
+		}
+		if (message.action !== "") {
+			writer.uint32(18).string(message.action)
+		}
+		if (message.text !== "") {
+			writer.uint32(26).string(message.text)
+		}
+		for (const v of message.images) {
+			writer.uint32(34).string(v!)
+		}
+		return writer
+	},
+
+	decode(input: BinaryReader | Uint8Array, length?: number): InvokeRequest {
+		const reader = input instanceof BinaryReader ? input : new BinaryReader(input)
+		let end = length === undefined ? reader.len : reader.pos + length
+		const message = createBaseInvokeRequest()
+		while (reader.pos < end) {
+			const tag = reader.uint32()
+			switch (tag >>> 3) {
+				case 1: {
+					if (tag !== 10) {
+						break
+					}
+
+					message.metadata = Metadata.decode(reader, reader.uint32())
+					continue
+				}
+				case 2: {
+					if (tag !== 18) {
+						break
+					}
+
+					message.action = reader.string()
+					continue
+				}
+				case 3: {
+					if (tag !== 26) {
+						break
+					}
+
+					message.text = reader.string()
+					continue
+				}
+				case 4: {
+					if (tag !== 34) {
+						break
+					}
+
+					message.images.push(reader.string())
+					continue
+				}
+			}
+			if ((tag & 7) === 4 || tag === 0) {
+				break
+			}
+			reader.skip(tag & 7)
+		}
+		return message
+	},
+
+	fromJSON(object: any): InvokeRequest {
+		return {
+			metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
+			action: isSet(object.action) ? globalThis.String(object.action) : "",
+			text: isSet(object.text) ? globalThis.String(object.text) : "",
+			images: globalThis.Array.isArray(object?.images) ? object.images.map((e: any) => globalThis.String(e)) : [],
+		}
+	},
+
+	toJSON(message: InvokeRequest): unknown {
+		const obj: any = {}
+		if (message.metadata !== undefined) {
+			obj.metadata = Metadata.toJSON(message.metadata)
+		}
+		if (message.action !== "") {
+			obj.action = message.action
+		}
+		if (message.text !== "") {
+			obj.text = message.text
+		}
+		if (message.images?.length) {
+			obj.images = message.images
+		}
+		return obj
+	},
+
+	create<I extends Exact<DeepPartial<InvokeRequest>, I>>(base?: I): InvokeRequest {
+		return InvokeRequest.fromPartial(base ?? ({} as any))
+	},
+	fromPartial<I extends Exact<DeepPartial<InvokeRequest>, I>>(object: I): InvokeRequest {
+		const message = createBaseInvokeRequest()
+		message.metadata =
+			object.metadata !== undefined && object.metadata !== null ? Metadata.fromPartial(object.metadata) : undefined
+		message.action = object.action ?? ""
+		message.text = object.text ?? ""
+		message.images = object.images?.map((e) => e) || []
+		return message
+	},
+}
+
 export type TaskServiceDefinition = typeof TaskServiceDefinition
 export const TaskServiceDefinition = {
 	name: "TaskService",
 	fullName: "cline.TaskService",
 	methods: {
+		/** Triggers actions in the ChatView component */
+		invoke: {
+			name: "invoke",
+			requestType: InvokeRequest,
+			requestStream: false,
+			responseType: Empty,
+			responseStream: false,
+			options: {},
+		},
 		/** Cancels the currently running task */
 		cancelTask: {
 			name: "cancelTask",

@@ -58,6 +58,7 @@ import { resetState } from "../core/controller/state/resetState"
 import { togglePlanActMode } from "../core/controller/state/togglePlanActMode"
 
 // Task Service
+import { invoke } from "../core/controller/task/invoke"
 import { cancelTask } from "../core/controller/task/cancelTask"
 import { clearTask } from "../core/controller/task/clearTask"
 import { deleteTasksWithIds } from "../core/controller/task/deleteTasksWithIds"
@@ -153,6 +154,7 @@ export function addServices(
 
 	// Task Service
 	server.addService(proto.cline.TaskService.service, {
+		invoke: wrapper(invoke, controller),
 		cancelTask: wrapper(cancelTask, controller),
 		clearTask: wrapper(clearTask, controller),
 		deleteTasksWithIds: wrapper(deleteTasksWithIds, controller),
