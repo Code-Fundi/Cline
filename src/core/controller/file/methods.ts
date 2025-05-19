@@ -17,6 +17,7 @@ import { selectImages } from "./selectImages"
 import { toggleClineRule } from "./toggleClineRule"
 import { toggleCursorRule } from "./toggleCursorRule"
 import { toggleWindsurfRule } from "./toggleWindsurfRule"
+import { toggleWorkflow } from "./toggleWorkflow"
 
 // Register all file service methods
 export function registerAllMethods(): void {
@@ -35,4 +36,5 @@ export function registerAllMethods(): void {
 	registerMethod("toggleClineRule", toggleClineRule)
 	registerMethod("toggleCursorRule", toggleCursorRule)
 	registerMethod("toggleWindsurfRule", toggleWindsurfRule)
+	registerMethod("toggleWorkflow", toggleWorkflow)
 }
