@@ -22,6 +22,7 @@ import FeatureSettingsSection from "./FeatureSettingsSection"
 import BrowserSettingsSection from "./BrowserSettingsSection"
 import TerminalSettingsSection from "./TerminalSettingsSection"
 import { FEATURE_FLAGS } from "@shared/services/feature-flags/feature-flags"
+import { PlanActMode } from "@shared/proto/state"
 const { IS_DEV } = process.env
 
 type SettingsViewProps = {
@@ -115,10 +116,9 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 			switch (message.type) {
 				case "didUpdateSettings":
 					if (pendingTabChange) {
-						vscode.postMessage({
-							type: "togglePlanActMode",
+						StateServiceClient.togglePlanActMode({
 							chatSettings: {
-								mode: pendingTabChange,
+								mode: pendingTabChange === "plan" ? PlanActMode.PLAN : PlanActMode.ACT,
 								preferredLanguage: chatSettings.preferredLanguage,
 								openAIReasoningEffort: chatSettings.openAIReasoningEffort,
 							},

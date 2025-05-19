@@ -20,7 +20,6 @@ export interface WebviewMessage {
 		| "refreshClineRules"
 		| "openMcpSettings"
 		| "autoApprovalSettings"
-		| "togglePlanActMode"
 		| "openExtensionSettings"
 		| "requestVsCodeLmModels"
 		| "showAccountViewClicked"
