@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire"
-import { Empty, Metadata, StringRequest } from "./common"
+import { Empty, Metadata, String, StringRequest } from "./common"
 
 export const protobufPackage = "cline"
 
@@ -16,11 +16,6 @@ export interface ShowConfirmDialogRequest {
 	message: string
 	modal: boolean
 	buttons: string[]
-}
-
-/** Response from a confirmation dialog */
-export interface ConfirmDialogOptionSelected {
-	selectedButton: string
 }
 
 function createBaseShowConfirmDialogRequest(): ShowConfirmDialogRequest {
@@ -132,64 +127,6 @@ export const ShowConfirmDialogRequest: MessageFns<ShowConfirmDialogRequest> = {
 	},
 }
 
-function createBaseConfirmDialogOptionSelected(): ConfirmDialogOptionSelected {
-	return { selectedButton: "" }
-}
-
-export const ConfirmDialogOptionSelected: MessageFns<ConfirmDialogOptionSelected> = {
-	encode(message: ConfirmDialogOptionSelected, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-		if (message.selectedButton !== "") {
-			writer.uint32(10).string(message.selectedButton)
-		}
-		return writer
-	},
-
-	decode(input: BinaryReader | Uint8Array, length?: number): ConfirmDialogOptionSelected {
-		const reader = input instanceof BinaryReader ? input : new BinaryReader(input)
-		let end = length === undefined ? reader.len : reader.pos + length
-		const message = createBaseConfirmDialogOptionSelected()
-		while (reader.pos < end) {
-			const tag = reader.uint32()
-			switch (tag >>> 3) {
-				case 1: {
-					if (tag !== 10) {
-						break
-					}
-
-					message.selectedButton = reader.string()
-					continue
-				}
-			}
-			if ((tag & 7) === 4 || tag === 0) {
-				break
-			}
-			reader.skip(tag & 7)
-		}
-		return message
-	},
-
-	fromJSON(object: any): ConfirmDialogOptionSelected {
-		return { selectedButton: isSet(object.selectedButton) ? globalThis.String(object.selectedButton) : "" }
-	},
-
-	toJSON(message: ConfirmDialogOptionSelected): unknown {
-		const obj: any = {}
-		if (message.selectedButton !== "") {
-			obj.selectedButton = message.selectedButton
-		}
-		return obj
-	},
-
-	create<I extends Exact<DeepPartial<ConfirmDialogOptionSelected>, I>>(base?: I): ConfirmDialogOptionSelected {
-		return ConfirmDialogOptionSelected.fromPartial(base ?? ({} as any))
-	},
-	fromPartial<I extends Exact<DeepPartial<ConfirmDialogOptionSelected>, I>>(object: I): ConfirmDialogOptionSelected {
-		const message = createBaseConfirmDialogOptionSelected()
-		message.selectedButton = object.selectedButton ?? ""
-		return message
-	},
-}
-
 /** UiService provides methods for managing UI interactions */
 export type UiServiceDefinition = typeof UiServiceDefinition
 export const UiServiceDefinition = {
@@ -210,7 +147,7 @@ export const UiServiceDefinition = {
 			name: "showConfirmDialog",
 			requestType: ShowConfirmDialogRequest,
 			requestStream: false,
-			responseType: ConfirmDialogOptionSelected,
+			responseType: String,
 			responseStream: false,
 			options: {},
 		},

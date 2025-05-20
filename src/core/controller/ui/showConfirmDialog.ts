@@ -1,6 +1,7 @@
 import vscode from "vscode"
 import { Controller } from ".."
-import { ConfirmDialogOptionSelected, ShowConfirmDialogRequest } from "../../../shared/proto/ui"
+import { ShowConfirmDialogRequest } from "../../../shared/proto/ui"
+import { String } from "../../../shared/proto/common"
 
 /**
  * Shows a confirmation dialog with custom buttons
@@ -8,10 +9,7 @@ import { ConfirmDialogOptionSelected, ShowConfirmDialogRequest } from "../../../
  * @param request The request containing dialog options
  * @returns Dialog response with the selected button
  */
-export async function showConfirmDialog(
-	controller: Controller,
-	request: ShowConfirmDialogRequest,
-): Promise<ConfirmDialogOptionSelected> {
+export async function showConfirmDialog(controller: Controller, request: ShowConfirmDialogRequest): Promise<String> {
 	try {
 		// Extract button options from the request
 		const { message, modal, buttons, metadata } = request
@@ -21,12 +19,12 @@ export async function showConfirmDialog(
 
 		// Return the selected button or empty string if cancelled
 		return {
-			selectedButton: selectedButton || "",
+			value: selectedButton || "",
 		}
 	} catch (error) {
 		console.error("Error in showConfirmDialog:", error)
 		return {
-			selectedButton: "",
+			value: "",
 		}
 	}
 }

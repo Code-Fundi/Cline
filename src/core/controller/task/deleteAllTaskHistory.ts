@@ -1,8 +1,7 @@
 import path from "path"
 import fs from "fs/promises"
 import { Controller } from ".."
-import { DeleteAllTaskHistoryCount } from "../../../shared/proto/task"
-import { BooleanRequest } from "../../../shared/proto/common"
+import { BooleanRequest, Int64 } from "../../../shared/proto/common"
 import { getGlobalState, updateGlobalState } from "../../storage/state"
 import { fileExistsAtPath } from "../../../utils/fs"
 import vscode from "vscode"
@@ -12,9 +11,9 @@ import { HistoryItem } from "@/shared/HistoryItem"
  * Deletes all task history, with an option to preserve favorites
  * @param controller The controller instance
  * @param request Request with option to preserve favorites
- * @returns Results with count of deleted tasks
+ * @returns Int64 with count of deleted tasks
  */
-export async function deleteAllTaskHistory(controller: Controller, request: BooleanRequest): Promise<DeleteAllTaskHistoryCount> {
+export async function deleteAllTaskHistory(controller: Controller, request: BooleanRequest): Promise<Int64> {
 	try {
 		// Clear current task first
 		await controller.clearTask()
@@ -43,7 +42,7 @@ export async function deleteAllTaskHistory(controller: Controller, request: Bool
 				}
 
 				return {
-					tasksDeleted: totalTasks - favoritedTasks.length,
+					value: totalTasks - favoritedTasks.length,
 				}
 			}
 		}
@@ -77,7 +76,7 @@ export async function deleteAllTaskHistory(controller: Controller, request: Bool
 		}
 
 		return {
-			tasksDeleted: totalTasks,
+			value: totalTasks,
 		}
 	} catch (error) {
 		console.error("Error in deleteAllTaskHistory:", error)

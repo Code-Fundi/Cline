@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire"
-import { BooleanRequest, Empty, EmptyRequest, Int64Request, Metadata, StringArrayRequest, StringRequest } from "./common"
+import { BooleanRequest, Empty, EmptyRequest, Int64, Int64Request, Metadata, StringArrayRequest, StringRequest } from "./common"
 
 export const protobufPackage = "cline"
 
@@ -79,11 +79,6 @@ export interface AskResponseRequest {
 	responseType: string
 	text: string
 	images: string[]
-}
-
-/** Results returned when deleting all task history */
-export interface DeleteAllTaskHistoryCount {
-	tasksDeleted: number
 }
 
 function createBaseNewTaskRequest(): NewTaskRequest {
@@ -1088,64 +1083,6 @@ export const AskResponseRequest: MessageFns<AskResponseRequest> = {
 	},
 }
 
-function createBaseDeleteAllTaskHistoryCount(): DeleteAllTaskHistoryCount {
-	return { tasksDeleted: 0 }
-}
-
-export const DeleteAllTaskHistoryCount: MessageFns<DeleteAllTaskHistoryCount> = {
-	encode(message: DeleteAllTaskHistoryCount, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-		if (message.tasksDeleted !== 0) {
-			writer.uint32(8).int32(message.tasksDeleted)
-		}
-		return writer
-	},
-
-	decode(input: BinaryReader | Uint8Array, length?: number): DeleteAllTaskHistoryCount {
-		const reader = input instanceof BinaryReader ? input : new BinaryReader(input)
-		let end = length === undefined ? reader.len : reader.pos + length
-		const message = createBaseDeleteAllTaskHistoryCount()
-		while (reader.pos < end) {
-			const tag = reader.uint32()
-			switch (tag >>> 3) {
-				case 1: {
-					if (tag !== 8) {
-						break
-					}
-
-					message.tasksDeleted = reader.int32()
-					continue
-				}
-			}
-			if ((tag & 7) === 4 || tag === 0) {
-				break
-			}
-			reader.skip(tag & 7)
-		}
-		return message
-	},
-
-	fromJSON(object: any): DeleteAllTaskHistoryCount {
-		return { tasksDeleted: isSet(object.tasksDeleted) ? globalThis.Number(object.tasksDeleted) : 0 }
-	},
-
-	toJSON(message: DeleteAllTaskHistoryCount): unknown {
-		const obj: any = {}
-		if (message.tasksDeleted !== 0) {
-			obj.tasksDeleted = Math.round(message.tasksDeleted)
-		}
-		return obj
-	},
-
-	create<I extends Exact<DeepPartial<DeleteAllTaskHistoryCount>, I>>(base?: I): DeleteAllTaskHistoryCount {
-		return DeleteAllTaskHistoryCount.fromPartial(base ?? ({} as any))
-	},
-	fromPartial<I extends Exact<DeepPartial<DeleteAllTaskHistoryCount>, I>>(object: I): DeleteAllTaskHistoryCount {
-		const message = createBaseDeleteAllTaskHistoryCount()
-		message.tasksDeleted = object.tasksDeleted ?? 0
-		return message
-	},
-}
-
 export type TaskServiceDefinition = typeof TaskServiceDefinition
 export const TaskServiceDefinition = {
 	name: "TaskService",
@@ -1264,7 +1201,7 @@ export const TaskServiceDefinition = {
 			name: "deleteAllTaskHistory",
 			requestType: BooleanRequest,
 			requestStream: false,
-			responseType: DeleteAllTaskHistoryCount,
+			responseType: Int64,
 			responseStream: false,
 			options: {},
 		},

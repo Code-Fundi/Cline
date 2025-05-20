@@ -11,7 +11,7 @@ service UiService {
   // Scrolls to a specific settings section in the settings view
   rpc scrollToSettings(StringRequest) returns (Empty);
   // Shows a confirmation dialog with custom buttons
-  rpc showConfirmDialog(ShowConfirmDialogRequest) returns (ConfirmDialogOptionSelected);
+  rpc showConfirmDialog(ShowConfirmDialogRequest) returns (String);
 }
 
 // Request for showing a confirmation dialog
@@ -20,9 +20,4 @@ message ShowConfirmDialogRequest {
   string message = 2;
   bool modal = 3;
   repeated string buttons = 4;
-}
-
-// Response from a confirmation dialog
-message ConfirmDialogOptionSelected {
-  string selected_button = 1;
 }
