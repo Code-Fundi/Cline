@@ -4,9 +4,11 @@
 // Import all method implementations
 import { registerMethod } from "./index"
 import { scrollToSettings } from "./scrollToSettings"
+import { showConfirmDialog } from "./showConfirmDialog"
 
 // Register all ui service methods
 export function registerAllMethods(): void {
 	// Register each method with the registry
 	registerMethod("scrollToSettings", scrollToSettings)
+	registerMethod("showConfirmDialog", showConfirmDialog)
 }

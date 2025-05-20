@@ -71,9 +71,11 @@ import { getTaskHistory } from "../core/controller/task/getTaskHistory"
 import { askResponse } from "../core/controller/task/askResponse"
 import { taskFeedback } from "../core/controller/task/taskFeedback"
 import { taskCompletionViewChanges } from "../core/controller/task/taskCompletionViewChanges"
+import { deleteAllTaskHistory } from "../core/controller/task/deleteAllTaskHistory"
 
 // Ui Service
 import { scrollToSettings } from "../core/controller/ui/scrollToSettings"
+import { showConfirmDialog } from "../core/controller/ui/showConfirmDialog"
 
 // Web Service
 import { checkIsImageUrl } from "../core/controller/web/checkIsImageUrl"
@@ -170,11 +172,13 @@ export function addServices(
 		askResponse: wrapper(askResponse, controller),
 		taskFeedback: wrapper(taskFeedback, controller),
 		taskCompletionViewChanges: wrapper(taskCompletionViewChanges, controller),
+		deleteAllTaskHistory: wrapper(deleteAllTaskHistory, controller),
 	})
 
 	// Ui Service
 	server.addService(proto.cline.UiService.service, {
 		scrollToSettings: wrapper(scrollToSettings, controller),
+		showConfirmDialog: wrapper(showConfirmDialog, controller),
 	})
 
 	// Web Service

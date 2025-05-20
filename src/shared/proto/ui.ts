@@ -5,9 +5,190 @@
 // source: ui.proto
 
 /* eslint-disable */
-import { Empty, StringRequest } from "./common"
+import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire"
+import { Empty, Metadata, StringRequest } from "./common"
 
 export const protobufPackage = "cline"
+
+/** Request for showing a confirmation dialog */
+export interface ShowConfirmDialogRequest {
+	metadata?: Metadata | undefined
+	message: string
+	modal: boolean
+	buttons: string[]
+}
+
+/** Response from a confirmation dialog */
+export interface ConfirmDialogOptionSelected {
+	selectedButton: string
+}
+
+function createBaseShowConfirmDialogRequest(): ShowConfirmDialogRequest {
+	return { metadata: undefined, message: "", modal: false, buttons: [] }
+}
+
+export const ShowConfirmDialogRequest: MessageFns<ShowConfirmDialogRequest> = {
+	encode(message: ShowConfirmDialogRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+		if (message.metadata !== undefined) {
+			Metadata.encode(message.metadata, writer.uint32(10).fork()).join()
+		}
+		if (message.message !== "") {
+			writer.uint32(18).string(message.message)
+		}
+		if (message.modal !== false) {
+			writer.uint32(24).bool(message.modal)
+		}
+		for (const v of message.buttons) {
+			writer.uint32(34).string(v!)
+		}
+		return writer
+	},
+
+	decode(input: BinaryReader | Uint8Array, length?: number): ShowConfirmDialogRequest {
+		const reader = input instanceof BinaryReader ? input : new BinaryReader(input)
+		let end = length === undefined ? reader.len : reader.pos + length
+		const message = createBaseShowConfirmDialogRequest()
+		while (reader.pos < end) {
+			const tag = reader.uint32()
+			switch (tag >>> 3) {
+				case 1: {
+					if (tag !== 10) {
+						break
+					}
+
+					message.metadata = Metadata.decode(reader, reader.uint32())
+					continue
+				}
+				case 2: {
+					if (tag !== 18) {
+						break
+					}
+
+					message.message = reader.string()
+					continue
+				}
+				case 3: {
+					if (tag !== 24) {
+						break
+					}
+
+					message.modal = reader.bool()
+					continue
+				}
+				case 4: {
+					if (tag !== 34) {
+						break
+					}
+
+					message.buttons.push(reader.string())
+					continue
+				}
+			}
+			if ((tag & 7) === 4 || tag === 0) {
+				break
+			}
+			reader.skip(tag & 7)
+		}
+		return message
+	},
+
+	fromJSON(object: any): ShowConfirmDialogRequest {
+		return {
+			metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
+			message: isSet(object.message) ? globalThis.String(object.message) : "",
+			modal: isSet(object.modal) ? globalThis.Boolean(object.modal) : false,
+			buttons: globalThis.Array.isArray(object?.buttons) ? object.buttons.map((e: any) => globalThis.String(e)) : [],
+		}
+	},
+
+	toJSON(message: ShowConfirmDialogRequest): unknown {
+		const obj: any = {}
+		if (message.metadata !== undefined) {
+			obj.metadata = Metadata.toJSON(message.metadata)
+		}
+		if (message.message !== "") {
+			obj.message = message.message
+		}
+		if (message.modal !== false) {
+			obj.modal = message.modal
+		}
+		if (message.buttons?.length) {
+			obj.buttons = message.buttons
+		}
+		return obj
+	},
+
+	create<I extends Exact<DeepPartial<ShowConfirmDialogRequest>, I>>(base?: I): ShowConfirmDialogRequest {
+		return ShowConfirmDialogRequest.fromPartial(base ?? ({} as any))
+	},
+	fromPartial<I extends Exact<DeepPartial<ShowConfirmDialogRequest>, I>>(object: I): ShowConfirmDialogRequest {
+		const message = createBaseShowConfirmDialogRequest()
+		message.metadata =
+			object.metadata !== undefined && object.metadata !== null ? Metadata.fromPartial(object.metadata) : undefined
+		message.message = object.message ?? ""
+		message.modal = object.modal ?? false
+		message.buttons = object.buttons?.map((e) => e) || []
+		return message
+	},
+}
+
+function createBaseConfirmDialogOptionSelected(): ConfirmDialogOptionSelected {
+	return { selectedButton: "" }
+}
+
+export const ConfirmDialogOptionSelected: MessageFns<ConfirmDialogOptionSelected> = {
+	encode(message: ConfirmDialogOptionSelected, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+		if (message.selectedButton !== "") {
+			writer.uint32(10).string(message.selectedButton)
+		}
+		return writer
+	},
+
+	decode(input: BinaryReader | Uint8Array, length?: number): ConfirmDialogOptionSelected {
+		const reader = input instanceof BinaryReader ? input : new BinaryReader(input)
+		let end = length === undefined ? reader.len : reader.pos + length
+		const message = createBaseConfirmDialogOptionSelected()
+		while (reader.pos < end) {
+			const tag = reader.uint32()
+			switch (tag >>> 3) {
+				case 1: {
+					if (tag !== 10) {
+						break
+					}
+
+					message.selectedButton = reader.string()
+					continue
+				}
+			}
+			if ((tag & 7) === 4 || tag === 0) {
+				break
+			}
+			reader.skip(tag & 7)
+		}
+		return message
+	},
+
+	fromJSON(object: any): ConfirmDialogOptionSelected {
+		return { selectedButton: isSet(object.selectedButton) ? globalThis.String(object.selectedButton) : "" }
+	},
+
+	toJSON(message: ConfirmDialogOptionSelected): unknown {
+		const obj: any = {}
+		if (message.selectedButton !== "") {
+			obj.selectedButton = message.selectedButton
+		}
+		return obj
+	},
+
+	create<I extends Exact<DeepPartial<ConfirmDialogOptionSelected>, I>>(base?: I): ConfirmDialogOptionSelected {
+		return ConfirmDialogOptionSelected.fromPartial(base ?? ({} as any))
+	},
+	fromPartial<I extends Exact<DeepPartial<ConfirmDialogOptionSelected>, I>>(object: I): ConfirmDialogOptionSelected {
+		const message = createBaseConfirmDialogOptionSelected()
+		message.selectedButton = object.selectedButton ?? ""
+		return message
+	},
+}
 
 /** UiService provides methods for managing UI interactions */
 export type UiServiceDefinition = typeof UiServiceDefinition
@@ -24,5 +205,44 @@ export const UiServiceDefinition = {
 			responseStream: false,
 			options: {},
 		},
+		/** Shows a confirmation dialog with custom buttons */
+		showConfirmDialog: {
+			name: "showConfirmDialog",
+			requestType: ShowConfirmDialogRequest,
+			requestStream: false,
+			responseType: ConfirmDialogOptionSelected,
+			responseStream: false,
+			options: {},
+		},
 	},
 } as const
+
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined
+
+export type DeepPartial<T> = T extends Builtin
+	? T
+	: T extends globalThis.Array<infer U>
+		? globalThis.Array<DeepPartial<U>>
+		: T extends ReadonlyArray<infer U>
+			? ReadonlyArray<DeepPartial<U>>
+			: T extends {}
+				? { [K in keyof T]?: DeepPartial<T[K]> }
+				: Partial<T>
+
+type KeysOfUnion<T> = T extends T ? keyof T : never
+export type Exact<P, I extends P> = P extends Builtin
+	? P
+	: P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never }
+
+function isSet(value: any): boolean {
+	return value !== null && value !== undefined
+}
+
+export interface MessageFns<T> {
+	encode(message: T, writer?: BinaryWriter): BinaryWriter
+	decode(input: BinaryReader | Uint8Array, length?: number): T
+	fromJSON(object: any): T
+	toJSON(message: T): unknown
+	create<I extends Exact<DeepPartial<T>, I>>(base?: I): T
+	fromPartial<I extends Exact<DeepPartial<T>, I>>(object: I): T
+}

@@ -4,7 +4,7 @@ import { vscode } from "@/utils/vscode"
 import { Virtuoso } from "react-virtuoso"
 import { memo, useMemo, useState, useEffect, useCallback } from "react"
 import Fuse, { FuseResult } from "fuse.js"
-import { TaskServiceClient } from "@/services/grpc-client"
+import { TaskServiceClient, UiServiceClient } from "@/services/grpc-client"
 import { formatLargeNumber } from "@/utils/format"
 import { formatSize } from "@/utils/format"
 import { ExtensionMessage } from "@shared/ExtensionMessage"
@@ -696,7 +696,22 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 							disabled={deleteAllDisabled || taskHistory.length === 0}
 							onClick={() => {
 								setDeleteAllDisabled(true)
-								vscode.postMessage({ type: "clearAllTaskHistory" })
+
+								UiServiceClient.showConfirmDialog({
+									message: "Are you sure you want to delete all task history?",
+									modal: true,
+									buttons: ["Delete All Except Favorites", "Delete Everything", "Cancel"],
+								})
+									.then((response: { selectedButton: string }) => {
+										if (response.selectedButton === "Delete All Except Favorites") {
+											return TaskServiceClient.deleteAllTaskHistory({ value: true })
+										} else if (response.selectedButton === "Delete Everything") {
+											return TaskServiceClient.deleteAllTaskHistory({ value: false })
+										}
+										return Promise.resolve()
+									})
+									.catch((error: Error) => console.error("Error with task history deletion:", error))
+									.finally(() => setDeleteAllDisabled(false))
 							}}>
 							Delete All History{totalTasksSize !== null ? ` (${formatSize(totalTasksSize)})` : ""}
 						</DangerButton>
