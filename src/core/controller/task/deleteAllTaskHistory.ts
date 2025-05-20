@@ -6,6 +6,7 @@ import { BooleanRequest } from "../../../shared/proto/common"
 import { getGlobalState, updateGlobalState } from "../../storage/state"
 import { fileExistsAtPath } from "../../../utils/fs"
 import vscode from "vscode"
+import { HistoryItem } from "@/shared/HistoryItem"
 
 /**
  * Deletes all task history, with an option to preserve favorites
@@ -19,7 +20,7 @@ export async function deleteAllTaskHistory(controller: Controller, request: Bool
 		await controller.clearTask()
 
 		// Get existing task history
-		const taskHistory = ((await getGlobalState(controller.context, "taskHistory")) as any[]) || []
+		const taskHistory = ((await getGlobalState(controller.context, "taskHistory")) as HistoryItem[]) || []
 		const totalTasks = taskHistory.length
 
 		// If preserving favorites, filter out non-favorites
