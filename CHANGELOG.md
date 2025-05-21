@@ -2,8 +2,6 @@
 
 ## 3.17.0
 
-### Minor Changes
-
 -   c6dbbdb: Migrate openSettings message to use state navigation handlers
 -   36c0192: Migrate refreshClineRules to protobus
 
