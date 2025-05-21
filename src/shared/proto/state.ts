@@ -56,7 +56,7 @@ export interface TogglePlanActModeRequest {
 export interface ChatSettings {
 	mode: PlanActMode
 	preferredLanguage?: string | undefined
-	openAIReasoningEffort?: string | undefined
+	openAiReasoningEffort?: string | undefined
 }
 
 export interface ChatContent {
@@ -222,7 +222,7 @@ export const TogglePlanActModeRequest: MessageFns<TogglePlanActModeRequest> = {
 }
 
 function createBaseChatSettings(): ChatSettings {
-	return { mode: 0, preferredLanguage: undefined, openAIReasoningEffort: undefined }
+	return { mode: 0, preferredLanguage: undefined, openAiReasoningEffort: undefined }
 }
 
 export const ChatSettings: MessageFns<ChatSettings> = {
@@ -233,8 +233,8 @@ export const ChatSettings: MessageFns<ChatSettings> = {
 		if (message.preferredLanguage !== undefined) {
 			writer.uint32(18).string(message.preferredLanguage)
 		}
-		if (message.openAIReasoningEffort !== undefined) {
-			writer.uint32(26).string(message.openAIReasoningEffort)
+		if (message.openAiReasoningEffort !== undefined) {
+			writer.uint32(26).string(message.openAiReasoningEffort)
 		}
 		return writer
 	},
@@ -267,7 +267,7 @@ export const ChatSettings: MessageFns<ChatSettings> = {
 						break
 					}
 
-					message.openAIReasoningEffort = reader.string()
+					message.openAiReasoningEffort = reader.string()
 					continue
 				}
 			}
@@ -283,8 +283,8 @@ export const ChatSettings: MessageFns<ChatSettings> = {
 		return {
 			mode: isSet(object.mode) ? planActModeFromJSON(object.mode) : 0,
 			preferredLanguage: isSet(object.preferredLanguage) ? globalThis.String(object.preferredLanguage) : undefined,
-			openAIReasoningEffort: isSet(object.openAIReasoningEffort)
-				? globalThis.String(object.openAIReasoningEffort)
+			openAiReasoningEffort: isSet(object.openAiReasoningEffort)
+				? globalThis.String(object.openAiReasoningEffort)
 				: undefined,
 		}
 	},
@@ -297,8 +297,8 @@ export const ChatSettings: MessageFns<ChatSettings> = {
 		if (message.preferredLanguage !== undefined) {
 			obj.preferredLanguage = message.preferredLanguage
 		}
-		if (message.openAIReasoningEffort !== undefined) {
-			obj.openAIReasoningEffort = message.openAIReasoningEffort
+		if (message.openAiReasoningEffort !== undefined) {
+			obj.openAiReasoningEffort = message.openAiReasoningEffort
 		}
 		return obj
 	},
@@ -310,7 +310,7 @@ export const ChatSettings: MessageFns<ChatSettings> = {
 		const message = createBaseChatSettings()
 		message.mode = object.mode ?? 0
 		message.preferredLanguage = object.preferredLanguage ?? undefined
-		message.openAIReasoningEffort = object.openAIReasoningEffort ?? undefined
+		message.openAiReasoningEffort = object.openAiReasoningEffort ?? undefined
 		return message
 	},
 }
