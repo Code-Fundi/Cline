@@ -85,6 +85,7 @@ import { scrollToSettings } from "../core/controller/ui/scrollToSettings"
 // Web Service
 import { checkIsImageUrl } from "../core/controller/web/checkIsImageUrl"
 import { fetchOpenGraphData } from "../core/controller/web/fetchOpenGraphData"
+import { openInBrowser } from "../core/controller/web/openInBrowser"
 
 export function addServices(
 	server: grpc.Server,
@@ -195,5 +196,6 @@ export function addServices(
 	server.addService(proto.cline.WebService.service, {
 		checkIsImageUrl: wrapper(checkIsImageUrl, controller),
 		fetchOpenGraphData: wrapper(fetchOpenGraphData, controller),
+		openInBrowser: wrapper(openInBrowser, controller),
 	})
 }

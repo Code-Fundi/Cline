@@ -327,11 +327,6 @@ export class Controller {
 				await refreshWorkflowToggles(this.context, cwd)
 				await this.postStateToWebview()
 				break
-			case "openInBrowser":
-				if (message.url) {
-					vscode.env.openExternal(vscode.Uri.parse(message.url))
-				}
-				break
 			case "showAccountViewClicked": {
 				await this.postMessageToWebview({ type: "action", action: "accountButtonClicked" })
 				break

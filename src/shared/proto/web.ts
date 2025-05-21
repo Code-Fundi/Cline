@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire"
-import { StringRequest } from "./common"
+import { Empty, StringRequest } from "./common"
 
 export const protobufPackage = "cline"
 
@@ -258,6 +258,14 @@ export const WebServiceDefinition = {
 			requestType: StringRequest,
 			requestStream: false,
 			responseType: OpenGraphData,
+			responseStream: false,
+			options: {},
+		},
+		openInBrowser: {
+			name: "openInBrowser",
+			requestType: StringRequest,
+			requestStream: false,
+			responseType: Empty,
 			responseStream: false,
 			options: {},
 		},
