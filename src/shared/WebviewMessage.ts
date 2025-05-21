@@ -16,7 +16,6 @@ export interface WebviewMessage {
 		| "reportBug"
 		| "didShowAnnouncement"
 		| "showChatView"
-		| "refreshClineRules"
 		| "openMcpSettings"
 		| "autoApprovalSettings"
 		| "togglePlanActMode"
