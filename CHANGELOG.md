@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.17.0
+
+### Minor Changes
+
+-   c6dbbdb: Migrate openSettings message to use state navigation handlers
+-   36c0192: Migrate refreshClineRules to protobus
+
 ## [3.16.2]
 
 -   Add support for Gemini 2.5 Flash Preview 05-20 model to Vertex AI provider with massive 1M token context window (Thanks @omercelik!)
