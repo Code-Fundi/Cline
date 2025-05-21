@@ -1880,7 +1880,7 @@ export const FileServiceDefinition = {
 			name: "toggleWorkflow",
 			requestType: ToggleWorkflowRequest,
 			requestStream: false,
-			responseType: Empty,
+			responseType: ClineRulesToggles,
 			responseStream: false,
 			options: {},
 		},
